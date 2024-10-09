@@ -1,3 +1,4 @@
+clear
 m = 128;
 n = 256;
 Success_count_OMP = zeros(63,1);
@@ -28,7 +29,9 @@ for S = 3:3:63
         if errorIHT < 1e-6
             Success_count_IHT(S) = Success_count_IHT(S)+1;
         end
+        clear A x errorOMP errorSP errorIHT xOMP xSP xIHT
     end
+    fprintf('Finish a S : %d\n',S)
 end
 Success_rate_OMP = Success_count_OMP/500;
 Success_rate_SP = Success_count_SP/500;
@@ -122,7 +125,7 @@ end
 %IHT
 function x_IHT = iterative_hard_thresholding(A, y, S)
     n = 256;
-    min = 1e-20;%迭代中预测的x与前一轮的x的范数相差min时退出循环
+    min = 1e-6;%迭代中预测的x与前一轮的x的范数相差min时退出循环
     l_0 = 0.001; %初始学习率,若不添加，会导致梯度过大而无法收敛
     expand_x = zeros(n,1);
     while 1
@@ -135,4 +138,5 @@ function x_IHT = iterative_hard_thresholding(A, y, S)
     end
     x_IHT = expand_x;
 end
+
 
