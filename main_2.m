@@ -125,7 +125,7 @@ end
 %IHT
 function x_IHT = iterative_hard_thresholding(A, y, S)
     n = 256;
-    min = 1e-6;%迭代中预测的x与前一轮的x的范数相差min时退出循环
+    min = 1e-4;%迭代中预测的x与前一轮的x的范数相差min时退出循环
     l_0 = 0.001; %初始学习率,若不添加，会导致梯度过大而无法收敛
     expand_x = zeros(n,1);
     while 1
