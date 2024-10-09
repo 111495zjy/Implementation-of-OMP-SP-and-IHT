@@ -2,6 +2,7 @@ m = 128
 n = 256
 S = 12
 A = randn(m, n);
+A = normc(A);
 support_indices = randsample(n, S);
 x = zeros(n, 1);
 x(support_indices) = randn(S, 1);  % N(0,1) 分布的非零元素
