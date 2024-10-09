@@ -95,6 +95,7 @@ function x_SP = subspace_pursuit(A, y, S)
     A_s = A(:,s);
     y_r = resid(y,A_s);
     min = 1e-6;
+    epoch = 0;
     while 1
         s_1 = union(s,find(Hard_Thresholding_Function(A_T*y_r, S, n)));%(Expand support)
         expand_b = zeros(n,1);  %init b
@@ -109,8 +110,13 @@ function x_SP = subspace_pursuit(A, y, S)
         expand_x(s) = x_s;  %(Estimate S-sparse signal
 
         y_r = y-A*expand_x; %(Compute estimation error
+        epoch = epoch+1;
 
         if norm(y_r) < min %循环退出条件
+            break
+        end
+
+        if epoch > 20000
             break
         end
     end
@@ -126,14 +132,19 @@ end
 %IHT
 function x_IHT = iterative_hard_thresholding(A, y, S)
     n = 256;
-    min = 1e-4;%迭代中预测的x与前一轮的x的范数相差min时退出循环
-    l_0 = 0.001; %初始学习率,若不添加，会导致梯度过大而无法收敛
+    min = 1e-16;%迭代中预测的x与前一轮的x的范数相差min时退出循环
+    l_0 = 0.1; %初始学习率,若不添加，会导致梯度过大而无法收敛
     expand_x = zeros(n,1);
+    epoch = 0;
     while 1
         x_pre = expand_x;
         x_input = expand_x + l_0*(A')*(y-A*expand_x);  %x+AT(y Ax)
         expand_x = Hard_Thresholding_Function(x_input, S, n);
+        epoch = epoch+1;
         if norm(expand_x-x_pre) < min  %当预测的x与前一轮的x的范数相差为min退出
+            break
+        end
+        if epoch > 20000
             break
         end
     end
