@@ -1,6 +1,6 @@
 m = 128
 n = 256
-S = 12
+S = 66
 A = randn(m, n);
 A = normc(A);
 support_indices = randsample(n, S);
@@ -10,7 +10,9 @@ y = A * x;
 x1 = pinv(A) * y;
 x2 = A \ y;  % 这里需要明确是否为直接计算，通常使用 y
 xOMP = orthogonal_matching_pursuit(A, y, S);
+fprintf('1')
 xSP = subspace_pursuit(A, y, S);
+fprintf('2')
 xIHT = iterative_hard_thresholding(A, y, S);
 error1 = norm(x - x1)
 error2 = norm(x - x2)
@@ -127,7 +129,7 @@ function x_SP = subspace_pursuit(A, y, S)
             break
         end
 
-        if epoch > 20000
+        if epoch > 200
             break
         end
     end
@@ -151,11 +153,11 @@ function x_IHT = iterative_hard_thresholding(A, y, S)
         x_pre = expand_x;
         x_input = expand_x + l_0*(A')*(y-A*expand_x);  %x+AT(y Ax)
         expand_x = Hard_Thresholding_Function(x_input, S, n);
-        epoch = epoch+1;
+        epoch = epoch+1
         if norm(expand_x-x_pre) < min  %当预测的x与前一轮的x的范数相差为min退出
             break
         end
-        if epoch > 20000
+        if epoch > 200
             break
         end
     end
