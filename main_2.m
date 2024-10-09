@@ -116,7 +116,7 @@ function x_SP = subspace_pursuit(A, y, S)
             break
         end
 
-        if epoch > 20000
+        if epoch > 200
             break
         end
     end
@@ -144,7 +144,7 @@ function x_IHT = iterative_hard_thresholding(A, y, S)
         if norm(expand_x-x_pre) < min  %当预测的x与前一轮的x的范数相差为min退出
             break
         end
-        if epoch > 20000
+        if epoch > 200
             break
         end
     end
