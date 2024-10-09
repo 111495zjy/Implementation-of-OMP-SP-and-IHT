@@ -7,6 +7,7 @@ Success_count_IHT = zeros(63,1);
 for S = 3:3:63
     for iter = 1:500
         A = randn(m, n);
+        A = normc(A);
         support_indices = randsample(n, S);
         x = zeros(n, 1);
         x(support_indices) = randn(S, 1);  % N(0,1) 分布的非零元素
